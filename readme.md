@@ -1,0 +1,2 @@
+## Hajusrakendus
+Hajus rakenduste ülesanded
