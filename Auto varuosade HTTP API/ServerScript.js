@@ -1,26 +1,18 @@
-const fs = require("fs");
-const Papa = require("papaparse");
 const express = require('express');
-const path = require("path");
+const fs = require('fs');
 const app = express();
+const port = 3000;
 
-// fs.readFile("LE.txt", "utf-8", (CSVdata) => {
-//  Papa.parse("LE.txt", )
-// });
-
-const data = [];
-
-app.get('/spare-parts', function (req, res) {
-  const carParts = path.join(__dirname, "LE.txt");
-
-  fs.readFile(carParts, "utf-8", (err, data) => {
+app.get('/all-parts', (req, res) => {
+  fs.readFile('LE.txt', 'utf8', (err, data) => {
     if (err) {
-      return res.status(500).send("Error reading file");
+      res.status(500).send('Error reading the LE.txt file');
+      return;
     }
     res.send(data);
   });
 });
 
-app.listen(3000);
-
-console.log("Live server url: http://localhost:3000/spare-parts");
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}\nUrl: http://localhost:3000/all-parts`);
+});
