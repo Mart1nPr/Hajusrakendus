@@ -1,4 +1,5 @@
 const express = require('express');
+const Papa = require('papaparse');
 const fs = require('fs');
 const app = express();
 const port = 3000;
@@ -6,13 +7,19 @@ const port = 3000;
 app.get('/all-parts', (req, res) => {
   fs.readFile('LE.txt', 'utf8', (err, data) => {
     if (err) {
-      res.status(500).send('Error reading the LE.txt file');
-      return;
+      return res.status(500).json({ error: 'Error reading the LE.txt file' });
     }
-    res.send(data);
+
+    const jsonData = Papa.parse(data, {
+      header: true,  
+      dynamicTyping: true, 
+      skipEmptyLines: true
+    });
+
+    res.json(jsonData.data);
   });
 });
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}\nUrl: http://localhost:3000/all-parts`);
+  console.log(`Server running at http://localhost:${port}/all-parts`);
 });
